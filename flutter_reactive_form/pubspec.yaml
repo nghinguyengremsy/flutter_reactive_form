@@ -1,7 +1,7 @@
 name: flutter_reactive_form
-description: "A new Flutter package project."
+description: "A reactive form for handling Form inputs and validation."
 version: 0.0.1
-homepage:
+repository: https://github.com/nghinguyengremsy/flutter_reactive_form
 
 environment:
   sdk: '>=3.4.3 <4.0.0'
