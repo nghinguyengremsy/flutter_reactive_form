@@ -15,8 +15,8 @@ and the Flutter guide for
 
 ## Minimum Requirements
 
-- Dart SDK: >=3.4.3 <4.0.0
-- Flutter: >=3.22.2
+- Dart SDK: >=2.18.6 <4.0.0
+- Flutter: >=1.17.0
 
 ## Installation and Usage
 
@@ -39,7 +39,7 @@ A _form_ is composed by _multiple field controls_.
 
 To declare a form with the fields _name_ and _birthday_ is as simple as:
  - _name_ have a default value.
- - _birthday is **null** by default.
+ - _birthday_ is **null** by default.
 
 ```dart
 final form = ReactiveForm(
@@ -156,8 +156,8 @@ class ProfileFormController with ReactiveFormMixin {
     setFieldData(fieldEnum: 'name', data: name);
   }
 
-  void setBirthday(DateTime bithday) {
-    setFieldData(fieldEnum: 'bithday', data: bithday);
+  void setBirthday(DateTime birthday) {
+    setFieldData(fieldEnum: 'birthday', data: birthday);
   }
   ///
 }
