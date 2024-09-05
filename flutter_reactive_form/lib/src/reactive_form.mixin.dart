@@ -7,13 +7,13 @@ import 'typedef.dart';
 mixin ReactiveFormMixin {
   late ReactiveForm _form;
 
-  UnmodifiableMapView<String, dynamic> get formControl => _form.formControl;
+  UnmodifiableMapView<String, dynamic> get formGroup => _form.formGroup;
   void initForm(ReactiveForm form) {
     _form = form;
   }
 
-  void setFormControl(FormControl formControl) {
-    _form.setFormControl(formControl);
+  void setFormGroup(FormGroup formGroup) {
+    _form.setFormGroup(formGroup);
   }
 
   void setDefaultMandatoryValidation(ValidationFunc func) {

@@ -4,7 +4,7 @@ version: 0.0.1
 repository: https://github.com/nghinguyengremsy/flutter_reactive_form
 
 environment:
-  sdk: '>=3.4.3 <4.0.0'
+  sdk: '>=2.18.6 <4.0.0'
   flutter: ">=1.17.0"
 
 dependencies:

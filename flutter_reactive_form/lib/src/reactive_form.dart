@@ -6,7 +6,12 @@ import 'typedef.dart';
 class ReactiveForm {
   ReactiveForm({
     required this.onChanged,
-  });
+    FormGroup? formGroup,
+  }) {
+    if (formGroup != null) {
+      setFormGroup(formGroup);
+    }
+  }
   final FormDataChangeCallback onChanged;
 
   Map<String, ValidationFunc> _formatValidationMap = {};
@@ -20,9 +25,9 @@ class ReactiveForm {
     }
     return '';
   };
-  late FormControl _formControl;
-  UnmodifiableMapView<String, dynamic> get formControl =>
-      UnmodifiableMapView<String, dynamic>(_formControl);
+  late FormGroup _formGroup;
+  UnmodifiableMapView<String, dynamic> get formGroup =>
+      UnmodifiableMapView<String, dynamic>(_formGroup);
   void setDefaultMandatoryValidation(ValidationFunc func) {
     _defaultMandatoryValidation = func;
   }
@@ -38,30 +43,31 @@ class ReactiveForm {
         Map<String, ValidationFunc>.from(mandatoryValidationMap);
   }
 
-  void setFormControl(FormControl formControl) {
-    _formControl = Map<String, FormFieldControl>.from(formControl);
+  void setFormGroup(FormGroup formGroup) {
+    _formGroup = Map<String, FormFieldControl>.from(formGroup);
   }
 
   void setFieldData({required String fieldEnum, required dynamic data}) {
-    final fieldControl= _formControl[fieldEnum];
+    final fieldControl = _formGroup[fieldEnum];
+    assert(fieldControl != null, "The field $fieldEnum must be created before");
     fieldControl?.data = data;
-    onChanged.call(_formControl);
+    onChanged.call(_formGroup, fieldControl!);
   }
 
   T? getFieldData<T>({required String fieldEnum}) {
-    return _formControl[fieldEnum]?.data as T?;
+    return _formGroup[fieldEnum]?.data as T?;
   }
 
   FormFieldControl<T?>? getField<T>({required String fieldEnum}) {
-    return _formControl[fieldEnum] as FormFieldControl<T?>?;
+    return _formGroup[fieldEnum] as FormFieldControl<T?>?;
   }
 
   bool isRequiredField(String fieldEnum, {bool defaultValue = false}) {
-    return _formControl[fieldEnum]?.isRequired ?? defaultValue;
+    return _formGroup[fieldEnum]?.isRequired ?? defaultValue;
   }
 
   bool isEnabledField(String fieldEnum, {bool defaultValue = true}) {
-    return _formControl[fieldEnum]?.isEnabled ?? defaultValue;
+    return _formGroup[fieldEnum]?.isEnabled ?? defaultValue;
   }
 
   List<String> validateFormatFields() {
@@ -84,7 +90,8 @@ class ReactiveForm {
 
   List<String> validateRequiredFields() {
     final errors = <String>[];
-    final requiredFields = _formControl.values.where((e) => e.isRequired).toList();
+    final requiredFields =
+        _formGroup.values.where((e) => e.isRequired).toList();
     for (final fieldControl in requiredFields) {
       final error = validateRequiredField(fieldControl);
 
@@ -114,23 +121,22 @@ class ReactiveForm {
   }
 
   void enableField(String fieldEnum) {
-    final fieldControl = _formControl[fieldEnum];
+    final fieldControl = _formGroup[fieldEnum];
     fieldControl?.isEnabled = true;
   }
 
   void disableField(String fieldEnum) {
-    final fieldControl = _formControl[fieldEnum];
+    final fieldControl = _formGroup[fieldEnum];
     fieldControl?.isEnabled = false;
   }
 
   void markAsRequiredField(String fieldEnum) {
-    final fieldControl = _formControl[fieldEnum];
+    final fieldControl = _formGroup[fieldEnum];
     fieldControl?.isRequired = true;
   }
 
   void markAsOptionalField(String fieldEnum) {
-    final fieldControl = _formControl[fieldEnum];
+    final fieldControl = _formGroup[fieldEnum];
     fieldControl?.isRequired = false;
   }
 }
-

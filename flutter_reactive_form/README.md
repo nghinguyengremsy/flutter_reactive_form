@@ -11,13 +11,154 @@ and the Flutter guide for
 [developing packages and plugins](https://flutter.dev/developing-packages).
 -->
 
-## Features
+<!-- ## Features -->
 
-## Getting started
+## Minimum Requirements
+
+- Dart SDK: >=3.4.3 <4.0.0
+- Flutter: >=3.22.2
+
+## Installation and Usage
+
+Once you're familiar with Flutter you may install this package adding `flutter_reactive_form` to the dependencies list
+of the `pubspec.yaml` file as follow:
+
+```yaml
+dependencies:
+  flutter:
+    sdk: flutter
+
+  flutter_reactive_form: ^0.0.1
+```
+
+Then run the command `flutter packages get` on the console.
+
+## Creating a form
+
+A _form_ is composed by _multiple field controls_.
+
+To declare a form with the fields _name_ and _birthday_ is as simple as:
+ - _name_ have a default value.
+ - _birthday is **null** by default.
+
+```dart
+final form = ReactiveForm(
+    onChanged: (formData, fieldChanged) {
+        /// Handle the change.
+    },
+    formGroup:{
+        "name": FormFieldData<String>(
+          fieldEnum: "name",
+          name: "Name",
+          isRequired: true,
+          isEnabled: true,
+          data: "Nghi",
+        ),
+        "birthday": FormFieldData<DateTime?>(
+          fieldEnum: "birthday",
+          name: "Birthday",
+          isRequired: true,
+          isEnabled: true,
+          data: null,
+        ),
+    },
+);
+```
+
+## How to get/set Form's data
+
+You can get the value of a field:
+
+```dart
+String get name => _reactiveForm.getFieldData<String>(fieldEnum: 'name');
+DateTime? get birthday => _reactiveForm.getFieldData<DateTime>(fieldEnum: 'birthday');
+
+```
 
 
-## Usage
+To set value to fields:
 
+```dart
+_reactiveForm.setFieldData(fieldEnum: 'name', data: "Kate");
+```
 
-## Additional information
+## Validations
 
+Set up your validations as follows:
+
+```dart
+_reactiveForm.setFormatValidationMap({
+    'birthday': (birthday) {
+      if (birthday == null || birthday.isAfter(DateTime.now())) {
+         return "The time is invalid";
+       }
+       return '';
+    },  
+});
+```
+To validate a field:
+```dart
+final fieldControl = _reactiveForm.getField(fieldEnum: 'name');
+final error = _reactiveForm.validateFormatField(fieldControl!);
+```
+To validate a form:
+```dart
+final errors = _reactiveForm.validateFormatFields();
+```
+## Using mixin
+There're available functions in **ReactiveFormMixin** that interface with the form internally:
+```dart
+class ProfileFormController with ReactiveFormMixin {
+  /// You can call it in state.initState()
+  void init() {
+    final form = ReactiveForm(
+      onChanged: (formData, fieldChanged) {
+        /// Handle the change.
+      },
+      formGroup: {
+        "name": FormFieldData<String>(
+          fieldEnum: "name",
+          name: "Name",
+          isRequired: true,
+          isEnabled: true,
+          data: "Nghi",
+        ),
+        "birthday": FormFieldData<DateTime?>(
+          fieldEnum: "birthday",
+          name: "Birthday",
+          isRequired: true,
+          isEnabled: true,
+          data: null,
+        ),
+      },
+    );
+    initForm(form);
+    setFormatValidationMap({
+      'birthday': (birthday) {
+        if (birthday == null || birthday.isAfter(DateTime.now())) {
+          return "The time is invalid";
+        }
+        return '';
+      },
+    });
+  }
+
+  /// Interact with UI
+  String? getName() {
+    return getFieldData<String>(fieldEnum: 'name');
+  }
+
+  DateTime? getBirthday() {
+    return getFieldData<DateTime>(fieldEnum: 'birthday')!;
+  }
+
+  void setName(String name) {
+    setFieldData(fieldEnum: 'name', data: name);
+  }
+
+  void setBirthday(DateTime bithday) {
+    setFieldData(fieldEnum: 'bithday', data: bithday);
+  }
+  ///
+}
+```
