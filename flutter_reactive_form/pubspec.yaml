@@ -1,6 +1,6 @@
 name: flutter_reactive_form
 description: "A reactive form for handling Form inputs and validation."
-version: 0.0.3
+version: 0.0.5
 repository: https://github.com/nghinguyengremsy/flutter_reactive_form
 
 environment:
