@@ -23,7 +23,7 @@ class ReactiveForm {
     if (v is String? && v.isNullOrEmpty) {
       return "This field is required";
     }
-    return '';
+    return null;
   };
   late FormGroup _formGroup;
   UnmodifiableMapView<String, dynamic> get formGroup =>
@@ -78,7 +78,7 @@ class ReactiveForm {
         continue;
       }
       final error = validateFormatField(fieldControl);
-      if (error.isNotEmpty) {
+      if (error != null && error.isNotEmpty) {
         // debugPrint(
         //     "[Form][Validation][Format][${fieldData.fieldEnum}][error] $error");
         errors.add(error);
@@ -95,7 +95,7 @@ class ReactiveForm {
     for (final fieldControl in requiredFields) {
       final error = validateRequiredField(fieldControl);
 
-      if (error.isNotEmpty) {
+      if (error != null && error.isNotEmpty) {
         // debugPrint(
         //     "[Form][Validation][Mandatory][${fieldData.fieldEnum}][error] $error");
         errors.add(fieldControl.name);
@@ -105,14 +105,14 @@ class ReactiveForm {
     return errors;
   }
 
-  String validateFormatField(FormFieldControl fieldControl, {dynamic value}) {
+  String? validateFormatField(FormFieldControl fieldControl, {dynamic value}) {
     final data = value ?? fieldControl.data;
     final validationFnc = _formatValidationMap[fieldControl.fieldEnum];
-    final error = validationFnc?.call(data) ?? '';
+    final error = validationFnc?.call(data);
     return error;
   }
 
-  String validateRequiredField(FormFieldControl fieldData, {dynamic value}) {
+  String? validateRequiredField(FormFieldControl fieldData, {dynamic value}) {
     final data = value ?? fieldData.data;
     final validationFnc = _mandatoryValidationMap[fieldData.fieldEnum] ??
         _defaultMandatoryValidation;

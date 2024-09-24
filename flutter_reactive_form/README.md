@@ -47,14 +47,14 @@ final form = ReactiveForm(
         /// Handle the change.
     },
     formGroup:{
-        "name": FormFieldData<String>(
+        "name": FormFieldControl<String>(
           fieldEnum: "name",
           name: "Name",
           isRequired: true,
           isEnabled: true,
           data: "Nghi",
         ),
-        "birthday": FormFieldData<DateTime?>(
+        "birthday": FormFieldControl<DateTime?>(
           fieldEnum: "birthday",
           name: "Birthday",
           isRequired: true,
@@ -116,14 +116,14 @@ class ProfileFormController with ReactiveFormMixin {
         /// Handle the change.
       },
       formGroup: {
-        "name": FormFieldData<String>(
+        "name": FormFieldControl<String>(
           fieldEnum: "name",
           name: "Name",
           isRequired: true,
           isEnabled: true,
           data: "Nghi",
         ),
-        "birthday": FormFieldData<DateTime?>(
+        "birthday": FormFieldControl<DateTime?>(
           fieldEnum: "birthday",
           name: "Birthday",
           isRequired: true,
