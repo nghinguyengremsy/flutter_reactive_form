@@ -72,12 +72,12 @@ class ReactiveForm {
 
   List<String> validateFormatFields() {
     final errors = <String>[];
-    for (final requiredField in _formatValidationMap.keys) {
-      final fieldControl = getField(fieldEnum: requiredField);
+    for (final field in _formatValidationMap.keys) {
+      final fieldControl = getField(fieldEnum: field);
       if (fieldControl == null) {
         continue;
       }
-      final error = validateFormatField(fieldControl);
+      final error = validateFormatField(field);
       if (error != null && error.isNotEmpty) {
         // debugPrint(
         //     "[Form][Validation][Format][${fieldData.fieldEnum}][error] $error");
@@ -93,7 +93,7 @@ class ReactiveForm {
     final requiredFields =
         _formGroup.values.where((e) => e.isRequired).toList();
     for (final fieldControl in requiredFields) {
-      final error = validateRequiredField(fieldControl);
+      final error = validateRequiredField(fieldControl.fieldEnum);
 
       if (error != null && error.isNotEmpty) {
         // debugPrint(
@@ -105,16 +105,19 @@ class ReactiveForm {
     return errors;
   }
 
-  String? validateFormatField(FormFieldControl fieldControl, {dynamic value}) {
-    final data = value ?? fieldControl.data;
-    final validationFnc = _formatValidationMap[fieldControl.fieldEnum];
+  String? validateFormatField(String fieldEnum, {dynamic value}) {
+    final fieldControl = getField(fieldEnum: fieldEnum);
+    final data = value ?? fieldControl?.data;
+    final validationFnc = _formatValidationMap[fieldEnum];
     final error = validationFnc?.call(data);
     return error;
   }
 
-  String? validateRequiredField(FormFieldControl fieldData, {dynamic value}) {
-    final data = value ?? fieldData.data;
-    final validationFnc = _mandatoryValidationMap[fieldData.fieldEnum] ??
+  String? validateRequiredField(String fieldEnum, {dynamic value}) {
+    final fieldControl = getField(fieldEnum: fieldEnum);
+    final data = value ?? fieldControl?.data;
+    final validationFnc =
+        _mandatoryValidationMap[fieldEnum] ??
         _defaultMandatoryValidation;
     final error = validationFnc.call(data);
     return error;

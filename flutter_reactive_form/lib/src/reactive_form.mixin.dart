@@ -45,13 +45,13 @@ mixin ReactiveFormMixin {
   bool isEnabledField(String fieldEnum, {bool defaultValue = true}) =>
       _form.isEnabledField(fieldEnum, defaultValue: defaultValue);
 
-  String? validateFormatField(FormFieldControl fieldControl, {dynamic value}) {
-    return _form.validateFormatField(fieldControl, value: value);
+  String? validateFormatField(String fieldEnum, {dynamic value}) {
+    return _form.validateFormatField(fieldEnum, value: value);
   }
 
-  String? validateRequiredField(FormFieldControl fieldControl,
+  String? validateRequiredField(String fieldEnum, 
       {dynamic value}) {
-    return _form.validateRequiredField(fieldControl, value: value);
+    return _form.validateRequiredField(fieldEnum, value: value);
   }
 
   List<String> validateRequiredFields() => _form.validateRequiredFields();
